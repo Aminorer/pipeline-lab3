@@ -39,7 +39,7 @@ jobs:
 
       - name: Merge dev into main
         if: success()
-        uses: tj-actions/merge-branch@v7
+        uses: pascalgn/automerge-action@v0.14.3
         with:
           from_branch: dev
           to_branch: main
