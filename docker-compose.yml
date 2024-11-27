@@ -22,7 +22,7 @@ services:
     depends_on:
       - mongodb
     environment:
-      - MONGO_URL=mongodb://mongodb:27017/reverse_todo
+      - MONGO_URL=mongodb+srv://DatabaseDataCamp:test123@clusterdatacamp.g87ek.mongodb.net/?retryWrites=true&w=majority&appName=ClusterDataCamp
     networks:
       - app-network
 
