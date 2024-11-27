@@ -6,7 +6,7 @@ on:
       - dev
 
 permissions:
-  contents: write  # Needed for merging branches
+  contents: write  
 
 jobs:
   build-test-merge:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Specify your Node.js version
+          node-version: '16'  
 
       - name: Install backend dependencies
         working-directory: ./backend
