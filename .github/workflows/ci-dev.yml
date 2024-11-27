@@ -1,46 +1,51 @@
-name: CI on Dev Branch
+name: Feature to Dev Workflow
 
 on:
   push:
     branches:
       - dev
 
-permissions:
-  contents: write  
-
 jobs:
-  build-test-merge:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'  
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
 
-      - name: Install backend dependencies
-        working-directory: ./backend
-        run: npm install
+    - name: Install backend dependencies
+      run: |
+        cd backend
+        npm install
 
-      - name: Run backend unit tests
-        working-directory: ./backend
-        run: npm test
+    - name: Run backend unit tests
+      run: |
+        cd backend
+        npm test
 
-      - name: Install frontend dependencies
-        working-directory: ./frontend
-        run: npm install
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        npm install
 
-      - name: Run frontend unit tests
-        working-directory: ./frontend
-        run: npm test
+    - name: Run frontend unit tests
+      run: |
+        cd frontend
+        npm test
 
-      - name: Merge dev into main
-        if: success()
-        uses: pascalgn/automerge-action@v0.14.3
-        with:
-          from_branch: dev
-          to_branch: main
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+  auto-merge:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+    - name: Merge dev into main
+      uses: pascalgn/automerge-action@v0.14.3
+      with:
+        merge-method: merge
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
